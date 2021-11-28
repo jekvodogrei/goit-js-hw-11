@@ -7,13 +7,14 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 let searchQueryResult = '';
-let Q = '';
+let pageN = 1;
+let q = '';
 const gallery = new SimpleLightbox('.gallery a', { enableKeyboard: true });
 
 
 const pixabayAPI = {
-  baseUrl: 'https://pixabay.com/api/',
-  key: '3705719-850a353db1ffe60c326d386e6',
+  baseUrl: 'https://pixabay.com/api/', 
+  key: '24560226-b25ab3a0f8bb647bdecf60a66',
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: 'true',
@@ -49,17 +50,24 @@ searchForm.addEventListener('submit', async e => {
     );
   }
 
-  if (searchQueryResult !== Q) {
+  if (searchQueryResult !== q) {
     console.log('CHANGED!!! NOT EMPTY QUERY');
+
+    pageN = 1;
+    pixabayAPI.page = `${pageN}`;
 
     gallerySelector.innerHTML = '';
     btnLoadMore.classList.remove('is-visible');
   } else {
+    pageN += 1;
+    pixabayAPI.page = `${pageN}`;
 
     btnLoadMore.classList.remove('is-visible');
   }
 
-  Q = searchQueryResult;
+  q = searchQueryResult;
+  pageN += 1;
+  pixabayAPI.page = `${pageN}`;
 
   try {
     const results = await fetchPhotos(searchQueryResult);
@@ -119,8 +127,10 @@ btnLoadMore.addEventListener('click', async () => {
 async function fetchPhotos() {
   const { baseUrl, key, image_type, orientation, safesearch, order, page, per_page } = pixabayAPI;
 
+  pixabayAPI.page = `${pageN}`;
+  
   const response = await axios.get(
-    `${baseUrl}?key=${key}&q=${Q}&image_type=${image_type}&orientation=${orientation}&safesearch=${safesearch}&order=${order}&page=${page}&per_page=${per_page}`,
+    `${baseUrl}?key=${key}&q=${q}&image_type=${image_type}&orientation=${orientation}&safesearch=${safesearch}&order=${order}&page=${page}&per_page=${per_page}`,
   );
   const results = response.data; 
 
