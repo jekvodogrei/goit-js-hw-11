@@ -41,6 +41,7 @@ searchForm.addEventListener("submit", async (e) => {
   searchQueryResult = searchQuery.value;
 
   if (searchQueryResult === '') {
+    
       console.log(searchQueryResult);
       gallerySelector.innerHTML = "";
       btnLoadMore.classList.remove("is-visible");
