@@ -124,11 +124,11 @@ btnLoadMore.addEventListener('click', async () => {
 });
 
 
-async function fetchPhotos() {
+async function fetchPhotos(searchQueryResult) {
   const { baseUrl, key, image_type, orientation, safesearch, order, page, per_page } = pixabayAPI;
 
   pixabayAPI.page = `${pageN}`;
-  
+
   const response = await axios.get(
     `${baseUrl}?key=${key}&q=${q}&image_type=${image_type}&orientation=${orientation}&safesearch=${safesearch}&order=${order}&page=${page}&per_page=${per_page}`,
   );
